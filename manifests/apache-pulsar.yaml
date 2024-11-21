@@ -1,0 +1,55 @@
+components:
+  zookeeper:
+    replicaCount: 3
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+    persistence:
+      storageClass: gp3
+      size: 20Gi
+
+  bookkeeper:
+    replicaCount: 3
+    resources:
+      requests:
+        cpu: 1
+        memory: 2Gi
+    persistence:
+      storageClass: gp3
+      size: 100Gi
+
+  broker:
+    replicaCount: 3
+    resources:
+      requests:
+        cpu: 1
+        memory: 2Gi
+    tls:
+      enabled: true
+      cert_name: pulsar-tls-secret
+
+  proxy:
+    replicaCount: 2
+    service:
+      type: LoadBalancer
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+        service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+
+auth:
+  authentication:
+    enabled: true
+    provider: jwt
+
+monitoring:
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
+
+broker:
+  configData:
+    PULSAR_PREFIX_managedLedgerDefaultEnsembleSize: "3"
+    PULSAR_PREFIX_managedLedgerDefaultAckQuorum: "2"
+    PULSAR_PREFIX_managedLedgerDefaultWriteQuorum: "3"

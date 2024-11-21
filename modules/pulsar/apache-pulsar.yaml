@@ -1,0 +1,117 @@
+# Global cluster settings
+global:
+  name: pulsar
+  persistence: false  # Set to true if you want persistent storage
+
+components:
+  # Enable required components
+  pulsar_manager: false
+  functions: false
+  toolset: true
+  mqtt: true  # Enable MQTT protocol handler
+
+# Zookeeper settings
+zookeeper:
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "0.3"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+
+# Bookkeeper settings
+bookkeeper:
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "0.3"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+
+# Broker settings
+broker:
+  mop:
+    enabled: true
+    proxyEnabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "0.3"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  
+  # Configure MQTT settings
+  mqttEnabled: true
+  
+  # Configure broker ports
+  ports:
+    mqtt: 1883
+    mqttssl: 8883
+
+  # Enable message offload to S3
+  configData:
+    managedLedgerMaxEntriesPerLedger: "50000"
+    managedLedgerMinLedgerRolloverTimeMinutes: "10"
+    managedLedgerOffloadDriver: "aws-s3"
+    managedLedgerOffloadMaxThreads: "2"
+    s3ManagedLedgerOffloadBucket: "${s3_bucket}"
+    s3ManagedLedgerOffloadRegion: "${s3_region}"
+    s3ManagedLedgerOffloadServiceEndpoint: "https://s3.${s3_region}.amazonaws.com"
+
+# Proxy settings
+proxy:
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "0.3"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  
+  # Enable MQTT in proxy
+  mqttEnabled: true
+  
+  # Configure proxy ports
+  ports:
+    mqtt: 1883
+    mqttssl: 8883
+  
+  # TLS configuration
+  tls:
+    enabled: true
+    cert: ${proxy_tls_cert}
+    key: ${proxy_tls_key}
+
+# MQTT Protocol Handler settings
+mqtt:
+  enabled: true
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "0.3"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+
+# Authentication settings (if needed)
+auth:
+  authentication:
+    enabled: false  # Set to true if you want to enable authentication
+  authorization:
+    enabled: false  # Set to true if you want to enable authorization
+
+# Monitoring settings
+prometheus:
+  enabled: true
+grafana:
+  enabled: true
+
+# Configure environment
+environment: ${environment}
