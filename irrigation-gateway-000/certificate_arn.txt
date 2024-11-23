@@ -1,0 +1,1 @@
+arn:aws:iot:us-east-1:011642526070:cert/b0194f8713a494eab3a7ecf4ea459ea0b586a5ec4e334af5fca47f5fe121e77c
