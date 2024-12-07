@@ -2,8 +2,8 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define DHTPIN 2 
-#define DHTTYPE DHT22 
+#define DHTPIN 2
+#define DHTTYPE DHT22
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -33,12 +33,11 @@ void setup() {
 }
 
 void loop() {
-
   temperatura = dht.readTemperature();
   umidade = dht.readHumidity();
 
   sensors.requestTemperatures();
-  float temperaturaSolo = sensors.getTempCByIndex(0); 
+  float temperaturaSolo = sensors.getTempCByIndex(0);
 
   int qntLuz = analogRead(pino_luz);
   int leituraUmidadeSolo = analogRead(pino_umidade_solo);
@@ -47,33 +46,16 @@ void loop() {
   float umidadeSoloPercentual = map(leituraUmidadeSolo, soloSeco, soloUmido, 0, 100);
   umidadeSoloPercentual = constrain(umidadeSoloPercentual, 0, 100);
 
-  float intensidadeUVPercentual = map(qntLuzUV, 0, 1023, 0, 100);
-  intensidadeUVPercentual = constrain(intensidadeUVPercentual, 0, 100);
-
-  Serial.print("Quantidade de luz: ");
-  Serial.println(qntLuz);
-
-  Serial.print("Temperatura do ar: ");
+  Serial.print("Temperatura: ");
   Serial.print(temperatura);
-  Serial.println(" °C");
-
-  Serial.print("Umidade do ar: ");
+  Serial.print(", Umidade: ");
   Serial.print(umidade);
-  Serial.println(" %");
-
-  Serial.print("Umidade do solo: ");
+  Serial.print(", Umidade Solo: ");
   Serial.print(umidadeSoloPercentual);
-  Serial.println(" %");
+  Serial.print(", Intensidade UV: ");
+  Serial.print(qntLuzUV);
+  Serial.print(", Temperatura Solo: ");
+  Serial.println(temperaturaSolo);
 
-  Serial.print("Intensidade luz UV: ");
-  Serial.print(intensidadeUVPercentual);
-  Serial.println(" %");
-
-  Serial.print("Temperatura solo: ");
-  Serial.print(temperaturaSolo);
-  Serial.println(" °C");
-
-  Serial.println("-------------------------------------");
-
-  delay(3000);
+  delay(1000);
 }
