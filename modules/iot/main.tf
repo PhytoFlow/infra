@@ -33,19 +33,19 @@ resource "aws_iot_thing_principal_attachment" "gateway_cert_attachment" {
 
 resource "aws_iot_topic_rule" "persist_messages" {
   name        = "persist_all_messages"
-  description = "Persist all IoT messages to S3"
+  description = "Persist all IoT messages to S3 with hierarchical and topic-specific file naming"
   enabled     = true
-  sql         = "SELECT *, timestamp() as timestamp FROM '+/#'"
+  sql         = "SELECT *, timestamp() as ingestion_timestamp FROM '+/#'"
   sql_version = "2016-03-23"
 
   s3 {
     bucket_name = aws_s3_bucket.iot_data.bucket
-    key         = "$${topic}/$${timestamp()}"
+    key         = "raw/$${topic()}/$${parse_time('yyyy-MM/dd', timestamp(), 'America/Sao_Paulo')}/$${timestamp()}.json"
     role_arn    = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   }
 }
 
-# // compute //
+# // COMPUTE //
 
 resource "aws_iot_thing_type" "compute_consumer" {
   name = "compute_consumer"

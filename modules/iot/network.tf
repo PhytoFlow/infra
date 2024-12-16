@@ -141,14 +141,14 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 # This endpoint exposes the IoT core inside the VPC only, which is then routed for the NLB
-# resource "aws_vpc_endpoint" "iot_core" {
-#   vpc_id              = aws_vpc.iot_vpc.id
-#   service_name        = "com.amazonaws.${var.aws_region}.iot.data"
-#   vpc_endpoint_type   = "Interface"
-#   subnet_ids          = [aws_subnet.private_subnets[0].id]
-#   security_group_ids  = [aws_security_group.iot_endpoint_sg.id]
-#   private_dns_enabled = true
-# }
+resource "aws_vpc_endpoint" "iot_core" {
+  vpc_id             = aws_vpc.iot_vpc.id
+  service_name       = "com.amazonaws.${var.aws_region}.iot.data"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = [aws_subnet.private_subnets[0].id]
+  security_group_ids = [aws_security_group.iot_endpoint_sg.id]
+  # private_dns_enabled = true
+}
 
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.iot_vpc.id
@@ -181,12 +181,6 @@ resource "aws_route" "iot_to_compute" {
   destination_cidr_block    = var.compute_vpc_cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.iot_compute.id
 }
-
-# resource "aws_route" "compute_to_iot" {
-#   route_table_id            = var.compute_private_rt_id
-#   destination_cidr_block    = aws_vpc.iot_vpc.cidr_block
-#   vpc_peering_connection_id = aws_vpc_peering_connection.iot_compute.id
-# }
 
 resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private_subnets)

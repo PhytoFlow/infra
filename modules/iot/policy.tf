@@ -139,3 +139,5 @@ resource "aws_iot_policy_attachment" "compute_policy_attachment" {
   policy = aws_iot_policy.compute_policy.name
   target = aws_iot_certificate.compute_cert.arn
 }
+
+

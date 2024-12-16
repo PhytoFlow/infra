@@ -32,22 +32,41 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "iot_data_encrypti
   }
 }
 
+
 # S3 Bucket Lifecycle Policy
 resource "aws_s3_bucket_lifecycle_configuration" "iot_data_lifecycle" {
   bucket = aws_s3_bucket.iot_data.id
 
   rule {
-    id     = "archive_old_data"
+    id     = "manage_raw_iot_data"
     status = "Enabled"
+
+    filter {
+      prefix = "raw/irrigation/"
+    }
 
     transition {
       days          = 30
       storage_class = "STANDARD_IA"
     }
 
+    expiration {
+      days = 365
+    }
+  }
+
+  rule {
+    id     = "manage_procesed_iot_data"
+    status = "Enabled"
+
+    filter {
+      prefix = "aggregated/irrigation/"
+    }
+
     transition {
-      days          = 90
+      days          = 60
       storage_class = "GLACIER"
+
     }
 
     expiration {
