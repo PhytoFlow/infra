@@ -18,7 +18,7 @@ resource "aws_iot_policy" "gateway_policy" {
         Action = ["iot:Publish"]
         Resource = [
           # Sensor data topics
-          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/sensors/+/data",
+          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/sensors/*/data",
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/gateway/status",
           # Error and diagnostics
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/errors",
@@ -30,7 +30,7 @@ resource "aws_iot_policy" "gateway_policy" {
         Action = ["iot:Subscribe"]
         Resource = [
           # Control commands
-          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topicfilter/irrigation/control/+/command",
+          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topicfilter/irrigation/control/*/command",
           # System updates
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topicfilter/irrigation/system/updates"
         ]
@@ -40,7 +40,7 @@ resource "aws_iot_policy" "gateway_policy" {
         Action = ["iot:Receive"]
         Resource = [
           # Control commands
-          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/control/+/command",
+          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/control/*/command",
           # System updates
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/system/updates"
         ]
@@ -70,7 +70,7 @@ resource "aws_iot_policy" "compute_policy" {
         Action = ["iot:Subscribe"]
         Resource = [
           # Subscribe to all sensor data
-          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topicfilter/irrigation/sensors/+/data",
+          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topicfilter/irrigation/sensors/*/data",
           # Gateway status
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topicfilter/irrigation/gateway/status",
           # Errors and diagnostics
@@ -83,7 +83,7 @@ resource "aws_iot_policy" "compute_policy" {
         Action = ["iot:Receive"]
         Resource = [
           # Receive all sensor data
-          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/sensors/+/data",
+          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/sensors/*/data",
           # Gateway status
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/gateway/status",
           # Errors and diagnostics
@@ -96,7 +96,7 @@ resource "aws_iot_policy" "compute_policy" {
         Action = ["iot:Publish"]
         Resource = [
           # Control commands
-          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/control/+/command",
+          "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/control/*/command",
           # System updates
           "arn:aws:iot:${var.aws_region}:${data.aws_caller_identity.current.account_id}:topic/irrigation/system/updates"
         ]

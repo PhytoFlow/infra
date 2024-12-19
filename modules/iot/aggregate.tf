@@ -46,11 +46,12 @@ resource "aws_lambda_function" "iot_data_aggregation" {
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   image_uri     = "${aws_ecr_repository.lambda_ecr_repo.repository_url}:latest"
   package_type  = "Image"
+  timeout = 300
 
   environment {
     variables = {
       SOURCE_BUCKET    = aws_s3_bucket.iot_data.id
-      SOURCE_PREFIX    = "raw"
+      SOURCE_PREFIX    = "raw/irrigation/sensors"
       DEST_BUCKET      = aws_s3_bucket.iot_data.id
       DEST_PREFIX      = "aggregated"
       INTERVAL_MINUTES = "30"
