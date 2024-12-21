@@ -87,6 +87,15 @@ compute_vpc_cidr_block = "10.1.0.0/16"
 compute_vpc_id   = "vpc-0123456789abcdef0"
 ```
 
+Também será necessário criar um arquivo `credentials` com profile 'default' contendo as credenciais da AWS, tipicamente:
+
+```
+[default]
+aws_access_key_id=
+aws_secret_access_key=
+aws_session_token=
+```
+
 ## Implantação
 
 A partir da pasta raiz:
@@ -278,8 +287,3 @@ Confirme a destruição digitando `yes` quando solicitado.
 
 - Configure os Logs do CloudWatch para a função Lambda
 - Ajuste as configurações de memória e tempo limite da função Lambda conforme necessário
-
-## Práticas Recomendadas de Segurança
-
-- Evite codificar credenciais em硬编码
-- Use variáveis de ambiente ou AWS Secrets Manager para informações sensíveis
